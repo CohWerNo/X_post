@@ -9,7 +9,7 @@ code {
     
     font-family:monospace, 'Courier New', Courier;
     font-size:0.7em;
-    text-wrap:initial;
+    overflow-wrap:anywhere;
 
     background-color:#9ec1ff;
     
@@ -19,6 +19,9 @@ code {
         width:100%;
 
         background-color:#8aa8dd;
+    }
+    n {
+        color:#ffffff;
     }
     nl {
         display:block;
