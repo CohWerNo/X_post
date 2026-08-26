@@ -1,0 +1,17 @@
+code {
+    bat_builtIn {
+        color:#b33dff;
+    }
+    bat_builtIn_function {
+        color:#4d85ff;
+    }
+    bat_tag {
+        color:#7251ff;
+    }
+    bat_string {
+        color:#a2ff81;
+    }
+    bat_flags {
+        color:#ede2ff;
+    }
+}

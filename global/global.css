@@ -1,7 +1,15 @@
+:root {
+    --html-background:aliceblue;
+    --html-text-color:#6495bd;
+}
+
 html {
     margin:10px;
+
+    background-color:var(--html-background);
+    
     font-family:Arial, Helvetica, sans-serif;
-    background-color: aliceblue;
+    font-size:2em;
 }
 body {
     margin:0;

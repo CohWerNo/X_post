@@ -1,6 +1,8 @@
 text {
-    font-size:2em;
+    display:inline;
+
     text_mono {
+        color:var(--html-text-color);
         font-family:monospace, 'Courier New', Courier;
     }
 }

@@ -1,0 +1,28 @@
+code {
+    display:block;
+    
+    margin:10px 0;
+
+    min-width:1em;
+    max-width:100%;
+    min-height:1em;
+    
+    font-family:monospace, 'Courier New', Courier;
+    font-size:0.7em;
+    text-wrap:initial;
+
+    background-color:#9ec1ff;
+    
+    title {
+        display:block;
+
+        width:100%;
+
+        background-color:#8aa8dd;
+    }
+    nl {
+        display:block;
+    
+        width:100%
+    }
+}

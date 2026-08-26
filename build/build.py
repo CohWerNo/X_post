@@ -25,7 +25,7 @@ arguments += " --minify-js true"
 arguments += " --collapse-attribute-whitespace"
 arguments += " --collapse-boolean-attributes"
 arguments += " --collapse-inline-tag-whitespace"
-arguments += " --collapse-whitespace"
+#arguments += " --collapse-whitespace"
 
 arguments += " --remove-attribute-quotes"
 arguments += " --remove-comments"
