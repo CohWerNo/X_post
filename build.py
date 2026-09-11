@@ -4,13 +4,16 @@ import subprocess
 fullDirPath = os.path.dirname(os.path.abspath(__file__))
 userPath = os.getcwd()
 
+from posts.post import post
+post.build()
+exit()
+
 result = subprocess.run(f"python \"{fullDirPath}/include.py\"", capture_output=True, text=True)
 if result.returncode == 0:
     print("Good Create one html: ", result.stdout)
 else:
     print("Bad Create one html: ", result.stderr)
     exit()
-
 
 arguments = "npx html-minifier-next"
 
@@ -25,7 +28,7 @@ arguments += " --minify-js true"
 arguments += " --collapse-attribute-whitespace"
 arguments += " --collapse-boolean-attributes"
 arguments += " --collapse-inline-tag-whitespace"
-#arguments += " --collapse-whitespace"
+arguments += " --collapse-whitespace"
 
 arguments += " --remove-attribute-quotes"
 arguments += " --remove-comments"
