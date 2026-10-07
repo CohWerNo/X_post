@@ -1,3 +1,7 @@
+"""
+
+"""
+
 from typing import Self
 
 class HTMLelement:
@@ -13,10 +17,13 @@ class HTMLelement:
         """
 
         self.htmlElement:str = htmlElement
+        """"""
 
         self.attributes:str = ""
+        """"""
 
         self.childrens:list[Self | any] = []
+        """"""
 
     def append(self, *htmlElements:Self | any) -> None:
         """

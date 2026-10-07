@@ -1,4 +1,6 @@
-import time
+"""
+
+"""
 
 from .htmlElement import HTMLelement
 from .head import Head
@@ -18,10 +20,14 @@ class HTML (HTMLelement):
         super().__init__("html")
         
         self.doctype:str = "html"
+        """"""
         self.lang:str = "en"
+        """"""
 
         self.head:Head
+        """"""
         self.body:Body
+        """"""
 
     def getFullHTMLelement(self) -> str:
         """
@@ -56,59 +62,68 @@ class HTML (HTMLelement):
         childCountEnd = [len(newChildren) - 1]
         elementPosition = 0
 
-        def deleteElementFromArray(childCountStart_number:int, childCountEnd_number:int) -> bool:
-            """
-            ВНУТРЕНЯЯ ФУНКЦИЯ.
+        #def deleteElementFromArray() -> bool:
+        #    """
+        #    ВНУТРЕНЯЯ ФУНКЦИЯ.
 
-            return <bool> -- Нужноли продолжать цыкл?
-            * `True` - Да.
-            * `False` - Нет.
-            """
-            nonlocal fullHTML, elementPosition
+        #    Удаляет элемент из массива.
 
-            # Удаляеи массив из памяти.
-            if childCountEnd_number < childCountStart_number:
-                del arrayParentElements[elementPosition]
-                del childCountEnd[elementPosition]
-                del childCountStart[elementPosition]
-                elementPosition -= 1
+        #    return <bool> -- Нужноли продолжать цыкл?
+        #    * `True` - Да.
+        #    * `False` - Нет.
+        #    """
+        #    nonlocal fullHTML, elementPosition, childCountEnd, childCountStart
 
-                # Закрывает весь "HTML" тег.
-                if elementPosition > -1:
-                    temp_childCountStart_number = childCountStart[elementPosition]
-                    temp_htmlClass = arrayParentElements[elementPosition]
-                    temp_htmlClass_element = temp_htmlClass[temp_childCountStart_number]
-                    fullHTML += temp_htmlClass_element.getCloseHead()
-                    childCountStart[elementPosition] += 1
-                else:
-                    return True
+        #    childCountEnd_number = childCountEnd[elementPosition]
+        #    childCountStart_number = childCountStart[elementPosition]
 
-            return False
+        #    # Удаляеи массив из памяти.
+        #    while childCountEnd_number >= childCountStart_number:
+        #        print("₽₽₽", childCountEnd_number, childCountStart_number, elementPosition)
+        #        del arrayParentElements[elementPosition]
+        #        del childCountEnd[elementPosition]
+        #        del childCountStart[elementPosition]
+        #        elementPosition -= 1
+
+        #        childCountEnd_number = childCountEnd[elementPosition]
+        #        childCountStart_number = childCountStart[elementPosition]
+
+        #    # Закрывает весь "HTML" тег.
+        #    if elementPosition > -1:
+        #        temp_childCountStart_number = childCountStart[elementPosition]
+        #        temp_htmlClass = arrayParentElements[elementPosition]
+        #        temp_htmlClass_element = temp_htmlClass[temp_childCountStart_number]
+
+        #        fullHTML += temp_htmlClass_element.getCloseHead()
+        #        childCountStart[elementPosition] += 1
+        #    else:
+        #        return True
+
+        #    return False
 
 
         # Разворачивает дерево что были сохранены в "childrens".
         while elementPosition > -1:
-            time.sleep(0.1)
-            print(1.1, elementPosition)
-            print(1.2, childCountStart)
-            print(1.3, childCountEnd)
-            print(1.4, arrayParentElements)
+            #time.sleep(0.1)
+            #print("------------------")
+            
+            #print(1.1, elementPosition)
+            #print(1.2, childCountStart)
+            #print(1.3, childCountEnd)
+            #print(1.4, arrayParentElements)
 
-            print(2.1, elementPosition)
-            print(2.2, childCountStart)
-            print(2.3, childCountEnd)
-            print(2.4, arrayParentElements)
+            childCountStart_number = childCountStart[elementPosition]
+            childCountEnd_number = childCountEnd[elementPosition]
 
-            try:
-                childCountStart_number = childCountStart[elementPosition]
-                childCountEnd_number = childCountEnd[elementPosition]
+            htmlClass = arrayParentElements[elementPosition]
+            htmlClass_element = htmlClass[childCountStart_number]
 
-                htmlClass = arrayParentElements[elementPosition]
-                htmlClass_element = htmlClass[childCountStart_number]
-            except IndexError:
-                if deleteElementFromArray(childCountStart[elementPosition], childCountEnd[elementPosition]):
-                    continue
+            #print(2.1, elementPosition)
+            #print(2.2, childCountStart)
+            #print(2.3, childCountEnd)
+            #print(2.4, arrayParentElements)
 
+            # Открывает "HTML" тег.
             isHTMLelement = True
             htmlClass_len = -1
             if isinstance(htmlClass_element, HTMLelement):
@@ -118,10 +133,10 @@ class HTML (HTMLelement):
                 isHTMLelement = False
 
             # Запоминает массив с другими элементами.
-            print(htmlClass_element)
+            #print(htmlClass_element)
             if isHTMLelement:
-                print("len", htmlClass_len)
-                if htmlClass_len > - 1:
+                #print("len", htmlClass_len)
+                if htmlClass_len > -1:
                     arrayParentElements.append(htmlClass_element.childrens)
                     childCountStart.append(0)
                     childCountEnd.append(htmlClass_len)
@@ -133,8 +148,44 @@ class HTML (HTMLelement):
                 fullHTML += str(htmlClass_element)
                 childCountStart[elementPosition] += 1
 
-            # Активируем функцию, и передаем в неё обновленные числа.
-            deleteElementFromArray(childCountStart[elementPosition], childCountEnd[elementPosition])
+            childCountEnd_number = childCountEnd[elementPosition]
+            childCountStart_number = childCountStart[elementPosition]
+
+            #print(3.1, elementPosition)
+            #print(3.2, childCountStart)
+            #print(3.3, childCountEnd)
+            #print(3.4, arrayParentElements)
+            # Удаляеи массив из памяти.
+            while childCountEnd_number < childCountStart_number:
+                #print("₽₽₽", childCountEnd_number, childCountStart_number, elementPosition)
+
+                try:
+                    del arrayParentElements[elementPosition]
+                    del childCountEnd[elementPosition]
+                    del childCountStart[elementPosition]
+                    elementPosition -= 1
+                    childCountStart[elementPosition] += 1
+
+                    childCountEnd_number = childCountEnd[elementPosition]
+                    childCountStart_number = childCountStart[elementPosition]
+
+                    temp_childCountStart_number = childCountStart[elementPosition]
+                    temp_htmlClass = arrayParentElements[elementPosition]
+                    temp_htmlClass_element = temp_htmlClass[temp_childCountStart_number -1]
+
+                    fullHTML += temp_htmlClass_element.getCloseHead()
+                except IndexError:
+                    #print("ppp", childCountEnd_number, childCountStart_number, elementPosition)
+                    break
+
+            # Закрывает весь "HTML" тег.
+            #if elementPosition > -1:
+            #    temp_childCountStart_number = childCountStart[elementPosition]
+            #    temp_htmlClass = arrayParentElements[elementPosition]
+            #    temp_htmlClass_element = temp_htmlClass[temp_childCountStart_number]
+
+            #    fullHTML += temp_htmlClass_element.getCloseHead()
+            #    childCountStart[elementPosition] += 1
 
         #fullHTML += pyHTML.createHTMLfromAttributes(self.head, self.body, self.childrens)
         fullHTML += "</" + self.htmlElement + ">"

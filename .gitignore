@@ -1,2 +1,7 @@
 build/html-minifier-next/*
 build/oneFile/*
+
+posts/*
+
+*.pyc
+__pycache__/
