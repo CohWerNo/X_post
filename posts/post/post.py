@@ -3,22 +3,17 @@ import pyHTML
 import htmlElements
 
 def build():
-    htmlPost = pyHTML.HTML()
+    htmlPost = pyHTML.HTML(True, True)
 
-    head = pyHTML.Head()
-    body = pyHTML.Body()
-    htmlPost.head = head
-    htmlPost.body = body
-
-    htmlElements.init(head)
-    htmlElements.text.init(head)
+    htmlElements.init(htmlPost.head)
+    htmlElements.text.init(htmlPost.head)
 
     text1 = htmlElements.text.Text()
     textMonospace1 = htmlElements.text.TextMonospace()
     textMonospace1.append("it's monospace!")
     text1.append("Hi ", textMonospace1, " WoW.", " (FFF) ")
 
-    body.append(text1)
+    htmlPost.body.append(text1)
 
     print(htmlPost.getFullHTMLelement())
 

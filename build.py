@@ -6,14 +6,15 @@ userPath = os.getcwd()
 
 from posts.post import post
 post.build()
-exit()
+exit(0)
 
 result = subprocess.run(f"python \"{fullDirPath}/include.py\"", capture_output=True, text=True)
 if result.returncode == 0:
     print("Good Create one html: ", result.stdout)
 else:
     print("Bad Create one html: ", result.stderr)
-    exit()
+    print("main", 1)
+    exit(1)
 
 arguments = "npx html-minifier-next"
 
@@ -52,6 +53,9 @@ if result.returncode == 0:
     print("Good Split size: ", result.stdout)
 else:
     print("Bad Split size: ", result.stderr)
-    exit()
+    print("main", 2)
+    exit(2)
 
 if os.path.exists(f"{userPath}/post.onehtml"): os.remove(f"{userPath}/post.onehtml")
+
+exit(0)
