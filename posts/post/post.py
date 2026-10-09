@@ -20,6 +20,9 @@ import htmlElements
 OUTPUT_FILE_NAME = f"{os.path.basename(fullBuildPath)}"
 """Имя конечного `HTML` файла.  """
 
+BR = "<br>"
+"""Удобно видеть в тексте "`{BR}`", вместо стандартного "`<br>`"."""
+
 IDS = "<!--keepSpaces-->"
 """
 IGNORE_DELETE_SPACE  
