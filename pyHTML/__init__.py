@@ -2,7 +2,6 @@
 Небольшой модуль для быстрого создания `HTML` сайта.
 """
 
-
 from .htmlElement import HTMLelement
 
 from .html import HTML

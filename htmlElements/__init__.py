@@ -19,6 +19,21 @@ def init(head:pyHTML.HTMLelement) -> None:
     pyHTML.addFileText(head, f"{htmlElements_dir}/global.css", "style")
     pyHTML.addFileText(head, f"{htmlElements_dir}/image.css", "style")
 
+def addFastTag(htmlElement:str, *objects:any, attributes:str) -> pyHTML.htmlElement:
+    """
+    Функция один раз создаёт класс для `HTML` елемента, который больше нигде не будет использоваться.  
+
+    `<str> htmlTag` -- `HTML` елемент который нужно единожды создать.  
+    `<any> * objects` -- Массив объектов что нужно увидить в `HTML` элементе.  
+    `<str> attributes` -- Атрибуты `HTML` элемента.  
+    """
+    
+    htmlElement = pyHTML.HTMLelement(htmlElement)
+    for i in objects:
+        htmlElement.append(i)
+        
+    return htmlElement 
+
 from .text import text
 
 __version__ = "0.0.0"

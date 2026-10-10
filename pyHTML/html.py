@@ -54,13 +54,8 @@ class HTML (HTMLelement):
         fullHTML += "<" + self.htmlElement
 
         ## Атрибуты.
-        if self.attributes:
-                fullHTML += " " + self.attributes
-
-        ## Зарание подготовленные атрибуты.
-        ### lang
-        if self.lang:
-            fullHTML += ' lang="' + self.lang + '"'
+        self.attributes["lang"] = self.lang
+        fullHTML += self.getFullStringAttributes()
             
         fullHTML += ">"
 

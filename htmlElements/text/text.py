@@ -14,7 +14,7 @@ def init(head:pyHTML.HTMLelement):
     """
     pyHTML.addFileText(head, f"{cssPath}/text.css", "style")
 
-class Default (pyHTML.HTMLelement):
+class _Default (pyHTML.HTMLelement):
     """
     Класс с настройками по умолчанию.  
     """
@@ -27,7 +27,7 @@ class Default (pyHTML.HTMLelement):
 
         super().__init__(htmlElement)
 
-class Text (Default):
+class Text (_Default):
     """
     Стандартный текст что в основном и будет находится на сайте.  
     Нужно это для удобного разделения текстовых элементов от других элементов.  
@@ -39,7 +39,7 @@ class Text (Default):
 
         super().__init__("text")
 
-class TextMonospace (Default):
+class TextMonospace (_Default):
     """
     Это тоже текст но моноширный, то есть текст будет занимать указанную область всегда.  
     """

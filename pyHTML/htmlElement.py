@@ -20,7 +20,7 @@ class HTMLelement:
         self.htmlElement:str = htmlElement
         """Сам `HTML` элемент.  """
 
-        self.attributes:str = ""
+        self.attributes:dict[str, any] = {}
         """Все различные атрибуты или переменные что будут записанны в `HTML` тег.  """
 
         self.childrens:list[Self | any] = []
@@ -59,25 +59,44 @@ class HTMLelement:
             if not lockIndex:
                 index += 1
 
-    def getHead(self):
+    def getHead(self) -> str:
         """
         `return <str>` -- Возвращяет строку в виде неполного `HTML` элемента. Как пример `<html {attributes}>`.  
         """
 
         head = "<" + self.htmlElement
 
-        if self.attributes:
-            head += " " + self.attributes
+        head += " " + self.getFullStringAttributes()
 
         head += ">"
         return head
 
-    def getCloseHead(self):
+    def getCloseHead(self) -> str:
         """
         `return <str>` -- Возвращяет строку в виде закрывающего `HTML` элемента. Как пример `</html>`.  
         """
 
         return "</" + self.htmlElement + ">"
+
+    def getFullStringAttributes(self) -> str:
+        """
+        Возвращяет полную строку аттрибутов, которые были заданны в переменной "`self.attributes`".  
+        
+        `return <str>` -- Возвращяет полную строку атрибутов что били указанны у элемента.  
+        """
+        
+        fullString = ""
+
+        addSpace = False
+
+        for key, value in self.attributes.items():
+            if addSpace:
+                fullString += " "
+            else:
+                addSpace = True
+            fullString += f"{key}=\"{str(value)}\""
+
+        return fullString
 
     def __str__(self) -> str:
         """
