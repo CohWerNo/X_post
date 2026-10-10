@@ -19,7 +19,7 @@ def init(head:pyHTML.HTMLelement) -> None:
     pyHTML.addFileText(head, f"{htmlElements_dir}/global.css", "style")
     pyHTML.addFileText(head, f"{htmlElements_dir}/image.css", "style")
 
-def addFastTag(htmlElement:str, *objects:any, attributes:dict[str,any]={}) -> pyHTML.htmlElement:
+def addFastTag(htmlElement:str, *objects:any, attributes:dict[str,any]={}) -> pyHTML.HTMLelement:
     """
     Функция один раз создаёт класс для `HTML` елемента, который больше нигде не будет использоваться.  
 
