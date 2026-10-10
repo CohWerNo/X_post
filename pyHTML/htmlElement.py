@@ -66,7 +66,9 @@ class HTMLelement:
 
         head = "<" + self.htmlElement
 
-        head += " " + self.getFullStringAttributes()
+        attributes = self.getFullStringAttributes()
+        if attributes:
+            head += " " + attributes
 
         head += ">"
         return head
@@ -84,6 +86,9 @@ class HTMLelement:
         
         `return <str>` -- Возвращяет полную строку атрибутов что били указанны у элемента.  
         """
+
+        if not isinstance(self.attributes, dict) and len(self.attributes):
+            return ""
         
         fullString = ""
 

@@ -55,7 +55,7 @@ class HTML (HTMLelement):
 
         ## Атрибуты.
         self.attributes["lang"] = self.lang
-        fullHTML += self.getFullStringAttributes()
+        fullHTML += " " + self.getFullStringAttributes()
             
         fullHTML += ">"
 
