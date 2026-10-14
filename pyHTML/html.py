@@ -24,24 +24,23 @@ class HTML (HTMLelement):
         super().__init__("html")
         
         self.doctype:str = "html"
-        """Тип документа который будет использоватся."""
+        """Тип документа который будет использоватся.  """
         self.lang:str = "en"
-        """Язык `HTML` страницы."""
+        """Язык `HTML` страницы.  """
 
+        self.head:Head
         if createHead:
             self.head = Head()
-        else:
-            self.head:Head
+
+        self.body:Body
         if createBody:
             self.body = Body()
-        else:
-            self.body:Body
 
     def getFullHTMLelement(self) -> str:
         """
         Создает и возвращяет полный `HTML` элемент.  
         В `HTML` элементе будут все написанные атрибуты, и всё дерево `HTML` элементов что были добавленны.  
-        Все `HTML` элементы будут расположенны в том порядке, в котором они идут.
+        Все `HTML` элементы будут расположенны в том порядке, в котором они идут.  
         """
         
         fullHTML = ""

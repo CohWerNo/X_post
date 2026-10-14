@@ -53,6 +53,7 @@ class TextMonospace (_Default):
 __versin__ = "0.0.0"
 __all__ = [
     "init",
+
     "Text",
     "TextMonospace",
 ]
