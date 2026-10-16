@@ -7,10 +7,12 @@
 По этому этот модуль можно изменять без последствий для проекта, под свой нужды.  
 """
 
+from typing import Any
+
 import os
 import pyHTML
 htmlElements_dir = os.path.dirname(os.path.abspath(__file__))
-"""Полный путь до папки "`htmlElements_dir`", что находится в корневой папке.  """
+"""Полный путь до папки "`htmlElements`", что находится в корневой папке.  """
 
 def init(head:pyHTML.HTMLelement) -> None:
     """
@@ -19,7 +21,7 @@ def init(head:pyHTML.HTMLelement) -> None:
     pyHTML.addFileText(head, f"{htmlElements_dir}/global.css", "style")
     pyHTML.addFileText(head, f"{htmlElements_dir}/image.css", "style")
 
-def addFastTag(htmlElement:str, *objects:any, attributes:dict[str,any]={}) -> pyHTML.HTMLelement:
+def addFastTag(htmlElement:str, *objects:Any, attributes:dict[str,Any]={}) -> pyHTML.HTMLelement:
     """
     Функция один раз создаёт класс для `HTML` елемента, который больше нигде не будет использоваться.  
 
@@ -29,16 +31,20 @@ def addFastTag(htmlElement:str, *objects:any, attributes:dict[str,any]={}) -> py
     """
     
     htmlElement = pyHTML.HTMLelement(htmlElement)
+    htmlElement.attributes = attributes
     for i in objects:
         htmlElement.append(i)
         
-    return htmlElement 
+    return htmlElement
 
 from .text import text
+from .language import language
 
 __version__ = "0.0.0"
 __all__ = [
-    "init",
     "htmlElements_dir",
+    
+    "init",
+
     "text",
 ]

@@ -21,7 +21,7 @@ OUTPUT_FILE_NAME = f"{os.path.basename(fullBuildPath)}"
 """Имя конечного `HTML` файла.  """
 
 BR = "<br>"
-"""Удобно видеть в тексте "`{BR}`", вместо стандартного "`<br>`"."""
+"""Удобно видеть в тексте "`{BR}`", вместо стандартного "`<br>`".  """
 
 IDS = "<!--keepSpaces-->"
 """
@@ -29,11 +29,29 @@ IGNORE_DELETE_SPACE
 Специальный текст для "`html-minifier-next`" который не позволяет убирать пробелы в заданном блоке.  
 """
 
+HTML_LANGUAGE:str
+try:
+    HTML_LANGUAGE = sys.argv[1]
+except IndexError:
+    HTML_LANGUAGE = "en"
+
 htmlPost = pyHTML.HTML(True, True)
 """Основная `HTML` страница.  """
+htmlPost.lang = HTML_LANGUAGE
 
 htmlElements.init(htmlPost.head)
 htmlElements.text.init(htmlPost.head)
+
+language = htmlElements.language.LanguageManagment()
+language.mainHTMLlanguage = HTML_LANGUAGE
+
+language_textDescription = "textDescription"
+language_language = "language"
+
+language_en = language.setLanguage("en")
+language_ru = language.setLanguage("ru")
+language_en.setText(language_language, "english")
+language_ru.setText(language_language, "русский")
 
 text1 = htmlElements.text.Text()
 
@@ -46,16 +64,26 @@ htmlMinifierNext_link = pyHTML.HTMLelement("a")
 htmlMinifierNext_link.append("html-minifier-next")
 htmlMinifierNext_link.attributes = {"href": "https://github.com/j9t/html-minifier-next"}
 
-text1.append(
+language_en.setText(language_textDescription,
+    f"Hello!{BR}{BR}",
+)
+language_ru.setText(language_textDescription,
     f"Привет!{BR}{BR}",
     
     "Это небольшая ", text_monospace1, " проект, которая позволяет собирать вот такие ", text_monospace2, f" сайты.{BR}"
     "Этот проект позволяет легко создать небольшой и легкий по размерам локальный ", text_monospace2, f" сайт.{BR}{BR}"
     
     "Я ", htmlElements.addFastTag("b", "ОЧЕНЬ"), " благодарен сообществу что делают \"", htmlElements.addFastTag(text_monospace1.htmlElement, htmlMinifierNext_link), f"\"!{BR}",
-    "Благодаря именно этим людям я сделал то что хотел.")
+    "Благодаря именно этим людям я сделал то что хотел."
+)
+
+text1.append(*language.getLanguage().getText(language_textDescription))
 
 htmlPost.body.append(IDS, text1, IDS)
+
+# TEst TEst TEst
+print(htmlPost.getFullHTMLelement())
+exit(0)
 
 # Записываем итоговый `HTML` сайт в файл.
 # Записываем этот файл обязательно в "`post.onehtml`", чтобы программа `html-minifier-next` увидело файл и начала его сокращять.
@@ -96,7 +124,7 @@ arguments += " --ignore-custom-fragments"
 arguments += " \"(?<=<!--keepSpaces-->)[\\s\\S]*?(?=<!--keepSpaces-->)\""
 
 arguments += f" --input \"{fullBuildPath}/post.onehtml\""
-arguments += f" --output \"{fullBuildPath}/bin/{OUTPUT_FILE_NAME}.html\""
+arguments += f" --output \"{fullBuildPath}/bin/{OUTPUT_FILE_NAME}{language.getLanguage(language_language).getText()[0]}.html\""
 
 
 ## Запускаем программу которая сократит размер всей `HTML` странице.
