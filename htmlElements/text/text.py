@@ -6,13 +6,14 @@
 import pyHTML
 
 import os
-cssPath = os.path.dirname(os.path.abspath(__file__))
+text_dir = os.path.dirname(os.path.abspath(__file__))
+"""Полный путь до папки "`text`", что находится в "htmlElements".  """
 
 def init(head:pyHTML.HTMLelement):
     """
     Устанавливает `CSS` стили в `Head` `HTML` страницы.
     """
-    pyHTML.addFileText(head, f"{cssPath}/text.css", "style")
+    pyHTML.addFileText(head, f"{text_dir}/text.css", "style")
 
 class _Default (pyHTML.HTMLelement):
     """
