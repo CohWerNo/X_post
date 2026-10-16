@@ -3,7 +3,7 @@
 Если нужно будет создать существующий `HTML` элемент которого нет по стандарту, или создать уникальный, то просто можно унаследовать этот класс.  
 """
 
-from typing import Self
+from typing import Self, Any
 
 class HTMLelement:
     """
@@ -20,13 +20,13 @@ class HTMLelement:
         self.htmlElement:str = htmlElement
         """Сам `HTML` элемент.  """
 
-        self.attributes:dict[str, any] = {}
+        self.attributes:dict[str, Any] = {}
         """Все различные атрибуты или переменные что будут записанны в `HTML` тег.  """
 
-        self.childrens:list[Self | any] = []
+        self.childrens:list[Self | Any] = []
         """Дети которые будут находится в нутри этого `HTML` элемента.  """
 
-    def append(self, *htmlElements:Self | any) -> None:
+    def append(self, *htmlElements:Self | Any) -> None:
         """
         Добавляет несколько объектов в самый конец массива.  
 
@@ -35,7 +35,7 @@ class HTMLelement:
         for i in htmlElements:
             self.childrens.append(i)
             
-    def prepend(self, *htmlElements:Self | any) -> None:
+    def prepend(self, *htmlElements:Self | Any) -> None:
         """
         Добавляет несколько объектов в самое начало массива.  
 
@@ -44,7 +44,7 @@ class HTMLelement:
         for i in htmlElements:
             self.childrens.insert(0, i)
 
-    def insert(self, index:int, lockIndex=False, *htmlElements:Self | any) -> None:
+    def insert(self, index:int, lockIndex=False, *htmlElements:Self | Any) -> None:
         """
         Добавляет несколько объектов в указанный индекс.  
 
