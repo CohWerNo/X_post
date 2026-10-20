@@ -11,12 +11,17 @@ from typing import Any
 
 import os
 import pyHTML
+
+from .text import text
+from .language import language
+from .error import DefaultMessageError, convertDictInString
+
 htmlElements_dir = os.path.dirname(os.path.abspath(__file__))
 """Полный путь до папки "`htmlElements`", что находится в корневой папке.  """
 
 def init(head:pyHTML.HTMLelement) -> None:
     """
-    Устанавливает `CSS` стили в `Head` `HTML` страницы.
+    Устанавливает `CSS` стили в `Head` `HTML` страницы.  
     """
     pyHTML.addFileText(head, f"{htmlElements_dir}/global.css", "style")
     pyHTML.addFileText(head, f"{htmlElements_dir}/image.css", "style")
@@ -36,9 +41,6 @@ def addFastTag(htmlElement:str, *objects:Any, attributes:dict[str,Any]={}) -> py
         htmlElement.append(i)
         
     return htmlElement
-
-from .text import text
-from .language import language
 
 __version__ = "0.0.0"
 __all__ = [

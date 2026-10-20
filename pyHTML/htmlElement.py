@@ -5,9 +5,76 @@
 
 from typing import Self, Any
 
-class HTMLelement:
+
+class HTMLelement_Empty:
     """
-    Создает и управляет `HTML` элементом, позволяет сохронять такиеже элементы.  
+    Класс позволяет создать пустой `HTML` элемент, если элемент не обязательно закрывать.  
+    """
+
+    def __init__(self, htmlElement:str=""):
+        """
+        Создаёт класс пустого `HTML` элемента.  
+        """
+
+        self.htmlElement:str = htmlElement
+        """Сам `HTML` элемент.  """
+
+        self.attributes:dict[str, Any] = {}
+        """Все различные атрибуты или переменные что будут записанны в `HTML` тег.  """
+
+    def getHead(self) -> str:
+        """
+        `return <str>` -- Возвращяет строку в виде пустого `HTML` элемента. Как пример `<html {attributes}>`.  
+        Также вместе с головой, возвращяються и введённые атрибуты.  
+        """
+
+        head = "<" + self.htmlElement
+
+        attributes = self.getFullStringAttributes()
+        if attributes:
+            head += " " + attributes
+
+        head += ">"
+        return head
+
+    def getFullStringAttributes(self) -> str:
+        """
+        `return <str>` -- Возвращяет полную строку аттрибутов, которые были заданны в переменной "`self.attributes`".  
+        
+        """
+
+        if not isinstance(self.attributes, dict) and len(self.attributes):
+            return ""
+        
+        fullString = ""
+
+        addSpace = False
+
+        for key, value in self.attributes.items():
+            if addSpace:
+                fullString += " "
+            else:
+                addSpace = True
+            fullString += f"{key}=\"{str(value)}\""
+
+        return fullString
+
+    def __str__(self) -> str:
+        """
+        `return <str>` -- Возвращяет переменную `self.htmlElement`.  
+        """
+        return self.htmlElement
+
+    def __len__(self) -> int:
+        """
+        `return <int>` -- Возвращяет число, что означает количество символов у переменной `self.htmlElement`.  
+        """
+        return len(self.htmlElement)
+
+
+class HTMLelement (HTMLelement_Empty):
+    """
+    Класс являеться самым обычным `HTML` элементом. 
     """
 
     def __init__(self, htmlElement:str=""):
@@ -17,11 +84,7 @@ class HTMLelement:
         `<str> htmlElement` -- Это `HTML` элемент.  
         """
 
-        self.htmlElement:str = htmlElement
-        """Сам `HTML` элемент.  """
-
-        self.attributes:dict[str, Any] = {}
-        """Все различные атрибуты или переменные что будут записанны в `HTML` тег.  """
+        super().__init__(htmlElement)
 
         self.childrens:list[Self | Any] = []
         """Дети которые будут находится в нутри этого `HTML` элемента.  """
@@ -59,57 +122,16 @@ class HTMLelement:
             if not lockIndex:
                 index += 1
 
-    def getHead(self) -> str:
-        """
-        `return <str>` -- Возвращяет строку в виде неполного `HTML` элемента. Как пример `<html {attributes}>`.  
-        """
-
-        head = "<" + self.htmlElement
-
-        attributes = self.getFullStringAttributes()
-        if attributes:
-            head += " " + attributes
-
-        head += ">"
-        return head
-
     def getCloseHead(self) -> str:
         """
         `return <str>` -- Возвращяет строку в виде закрывающего `HTML` элемента. Как пример `</html>`.  
         """
-
         return "</" + self.htmlElement + ">"
 
-    def getFullStringAttributes(self) -> str:
-        """
-        Возвращяет полную строку аттрибутов, которые были заданны в переменной "`self.attributes`".  
-        
-        `return <str>` -- Возвращяет полную строку атрибутов что били указанны у элемента.  
-        """
 
-        if not isinstance(self.attributes, dict) and len(self.attributes):
-            return ""
-        
-        fullString = ""
 
-        addSpace = False
-
-        for key, value in self.attributes.items():
-            if addSpace:
-                fullString += " "
-            else:
-                addSpace = True
-            fullString += f"{key}=\"{str(value)}\""
-
-        return fullString
-
-    def __str__(self) -> str:
-        """
-        `return <str>` -- Возвращяет переменную `self.htmlElement`.  
-        """
-        return self.htmlElement
-    def __len__(self) -> int:
-        """
-        `return <int>` -- Возвращяет число, что означает количество символов у переменной `self.htmlElement`.  
-        """
-        return len(self.htmlElement)
+__version__ = "1.0.1"
+__all__ = [
+    "HTMLelement_Empty",
+    "HTMLelement",
+]

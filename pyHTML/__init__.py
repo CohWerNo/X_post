@@ -2,7 +2,7 @@
 Небольшой модуль для быстрого создания `HTML` сайта.
 """
 
-from .htmlElement import HTMLelement
+from .htmlElement import HTMLelement_Empty, HTMLelement
 
 from .html import HTML
 
@@ -11,8 +11,8 @@ from .body import Body
 
 def addFileText(element:HTMLelement, filePath:str, htmlElement:str | None) -> None:
     """
-    Создает отдельный `HTML` элемент и добовляет его в указанный `HTML` элемент.  
-    Чтобы добавить весь текст из указанного файла в указанный "HTML" элемент, нужно чтобы переменная "`htmlElement`" оставалась пустой.  
+    Создает отдельный `HTML` элемент и добовляет его в указанный `HTML` элемент в месте с текстом.  
+    Чтобы добавить весь текст из указанного файла в указанный `HTML` элемент, нужно чтобы переменная "`htmlElement`" оставалась пустой.  
 
     `<HTMLelement> element` -- Элемент в который будет добавлен элемент. Или весь текст из указанного файла.  
     `<str> filePath` -- Путь до файла, из которого нужно достать весь текст.  
@@ -35,7 +35,9 @@ def addFileText(element:HTMLelement, filePath:str, htmlElement:str | None) -> No
 
 __version__ = "1.0.0"
 __all__ = [
+    "HTMLelement_Empty",
     "HTMLelement",
+
     "HTML",
     "Head",
     "Body",

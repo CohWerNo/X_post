@@ -1,9 +1,9 @@
 """
-"html.py" являеться главным модулем для создания локальной `HTML` страницы.  
+"`html.py`" являеться главным модулем для создания локальной `HTML` страницы.  
 Именно в этом модуле есть возможность создать всю `HTML` страницы, так-как в самом `HTML` документе, самым главным тегом и самым первым всегда являеться `<html>`.  
 """
 
-from .htmlElement import HTMLelement
+from .htmlElement import HTMLelement_Empty, HTMLelement
 from .head import Head
 from .body import Body
 
@@ -13,28 +13,55 @@ class HTML (HTMLelement):
     Через этот класс можно создать целое дерево `"HTML"` элементов.  
     """
     
-    def __init__(self, createHead:bool=False, createBody:bool=False):
+    def __init__(self):
         """
-        Создает и настрайвает класс, и затем возвращяет его.  
-        
-        `<bool> createHead` -- Создаёт `Head` и автоматически устанавливает его в соответствующую переменную.  
-        `<bool> createBody` -- Создаёт `Body` и автоматически устанавливает его в соответствующую переменную.  
+        Создаёт класс для удобной оаботы с `HTML` сайтом на `Python`.  
         """
 
         super().__init__("html")
         
         self.doctype:str = "html"
-        """Тип документа который будет использоватся.  """
+        """Тип документа который будет использоватся.  
+        Если переменная будет пустой, то `HTML` элемент "`<DOCTYPE {self.doctype}>`" не будет установлен.  
+
+        `default = "html"`.  
+        """
+
         self.lang:str = "en"
-        """Язык `HTML` страницы.  """
+        """Язык `HTML` страницы.  
+
+        `default = "en"`  
+        """
+
+        self.title = ""
+        """Загаловок страницы.  
+        Если переменная будет пустой, то `HTML` элемент "`<title>{self.title}</title>`" не будет создан.  
+        """
+
+        self.charset = "UTF-8"
+        """Кодировка символов на сайте.  
+        Если переменная будет пустой, то `HTML` элемент "`<meta charset="{self.charset}">`" не будет создан.  
+
+        `default = "UTF-8"`  
+        """
+
+        self.deviceScale = "width=device-width, initial-scale=1"
+        """Указывает единый размер сайта для разных устройств.  
+        Если переменная будет пустой, то `HTML` элемент не будет создан.  
+
+        `default = "width=device-width, initial-scale=1"`  
+
+        По умолчанию будет созданн вот такой `HTML` элемент, в элементе "`<html><head>`"  
+        ```html
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        ```
+        """
 
         self.head:Head
-        if createHead:
-            self.head = Head()
+        """Голова `HTML` страницы.  """
 
         self.body:Body
-        if createBody:
-            self.body = Body()
+        """Тело `HTML` страницы.  """
 
     def getFullHTMLelement(self) -> str:
         """
@@ -58,6 +85,30 @@ class HTML (HTMLelement):
             
         fullHTML += ">"
 
+        # Заполняем `HTML` элемент "`head`".
+        if self.head:
+            if self.charset:
+                meta = HTMLelement_Empty("meta")
+                meta.attributes = {
+                    "charset": self.charset,
+                }
+                self.head.append(meta)
+
+            if self.deviceScale:
+                meta = HTMLelement_Empty("meta")
+                meta.attributes = {
+                    "name": "viewport",
+                    "content": "width=device-width, initial-scale=1",
+                }
+                self.head.append(meta)
+
+            if self.title:
+                title = HTMLelement("title")
+                title.append(self.title)
+                self.head.append(title)
+
+        # Заполнение `HTML` элементов в итоговый текст.
+        # Собираются все дети что находяться у `HTML` элементов.
         newChildren = []
         newChildren.append(self.head)
         newChildren.append(self.body)
@@ -129,10 +180,17 @@ class HTML (HTMLelement):
 
             # Открывает "HTML" тег.
             isHTMLelement = True
+            isHTMLemptyElement = False
             htmlClass_len = -1
             if isinstance(htmlClass_element, HTMLelement):
                 fullHTML += htmlClass_element.getHead()
                 htmlClass_len = len(htmlClass_element.childrens) - 1
+
+            elif isinstance(htmlClass_element, HTMLelement_Empty):
+                fullHTML += htmlClass_element.getHead()
+                isHTMLelement = False
+                isHTMLemptyElement = True
+
             else:
                 isHTMLelement = False
 
@@ -148,6 +206,10 @@ class HTML (HTMLelement):
                 else:
                     fullHTML += htmlClass_element.getCloseHead()
                     childCountStart[elementPosition] += 1
+
+            elif isHTMLemptyElement:
+                childCountStart[elementPosition] += 1
+
             else:
                 fullHTML += str(htmlClass_element)
                 childCountStart[elementPosition] += 1
