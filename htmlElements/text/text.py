@@ -1,6 +1,8 @@
 """
 Текст что обычно будет на сайте.  
 Модуль нужен только для удобства разделенния обычного текста, от других элементов.  
+
+Чтобы модуль правильно отображался на сайте, нужно запустить "`init()`".  
 """
 
 import pyHTML
@@ -8,6 +10,11 @@ import pyHTML
 import os
 text_dir = os.path.dirname(os.path.abspath(__file__))
 """Полный путь до папки "`text`", что находится в "htmlElements".  """
+
+HTML__TEXT = "text"
+"""Это текст для вставки соответствующего `HTML` элкмента.  """
+HTML__TEXT_MONOSPACE = "text_monospace"
+"""Это текст для вставки соответствующего `HTML` элкмента.  """
 
 def init(head:pyHTML.HTMLelement):
     """
@@ -38,7 +45,7 @@ class Text (_Default):
         Создаёт текстовый `HTML` элемент.  
         """
 
-        super().__init__("text")
+        super().__init__(HTML__TEXT)
 
 class TextMonospace (_Default):
     """
@@ -49,9 +56,9 @@ class TextMonospace (_Default):
         Создаёт моноширно текстовый `HTML` элемент.  
         """
 
-        super().__init__("text_monospace")
+        super().__init__(HTML__TEXT_MONOSPACE)
 
-__versin__ = "0.0.0"
+__versin__ = "1.0.0"
 __all__ = [
     "init",
 
