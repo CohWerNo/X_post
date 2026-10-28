@@ -35,12 +35,18 @@ try:
 except IndexError:
     HTML_LANGUAGE = "en"
 
-htmlPost = pyHTML.HTML(True, True)
+htmlPost = pyHTML.HTML()
 """Основная `HTML` страница.  """
+htmlPost.head = pyHTML.Head()
+htmlPost.body = pyHTML.Body()
+
 htmlPost.lang = HTML_LANGUAGE
+htmlPost.title = "Hello MarkDown!"
+
 
 htmlElements.init(htmlPost.head)
 htmlElements.text.init(htmlPost.head)
+
 
 language = htmlElements.language.LanguageManagment()
 language.mainHTMLlanguage = HTML_LANGUAGE
@@ -73,7 +79,7 @@ language_ru.setText(language_textDescription,
     "Это небольшая ", text_monospace1, " проект, которая позволяет собирать вот такие ", text_monospace2, f" сайты.{BR}"
     "Этот проект позволяет легко создать небольшой и легкий по размерам локальный ", text_monospace2, f" сайт.{BR}{BR}"
     
-    "Я ", htmlElements.addFastTag("b", "ОЧЕНЬ"), " благодарен сообществу что делают \"", htmlElements.addFastTag(text_monospace1.htmlElement, htmlMinifierNext_link), f"\"!{BR}",
+    "Я ", htmlElements.addFastTag("b", "ОЧЕНЬ"), " благодарен сообществу что делают \"", htmlElements.addFastTag(htmlElements.text.HTML__TEXT_MONOSPACE, htmlMinifierNext_link), f"\"!{BR}",
     "Благодаря именно этим людям я сделал то что хотел."
 )
 
@@ -81,7 +87,6 @@ text1.append(*language.getLanguage().getText(language_textDescription))
 
 htmlPost.body.append(IDS, text1, IDS)
 
-# TEst TEst TEst
 print(htmlPost.getFullHTMLelement())
 exit(0)
 
@@ -136,6 +141,7 @@ else:
     print("main", 2)
     exit(2)
 
+text1.append(*language.getLanguage(language_textDescription).getText())
 if os.path.exists(f"{fullBuildPath}/post.onehtml"): os.remove(f"{fullBuildPath}/post.onehtml")
 
 exit(0)
