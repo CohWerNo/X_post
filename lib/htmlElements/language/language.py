@@ -3,7 +3,7 @@
 Этот модуль необходим для создания нескольких независемых "HTML" сайтов на разном языке. 
 
 По этому модулю стойт знать главное!  
-* Этот модуль не создан для создания нескольких языков в предела одного сайта.  
+* Этот модуль не создан для создания нескольких языков в пределах одного сайта.  
 * Модуль покачто не поддерживает генераций нескольких "HTML" сайтов на разных языках, в пределах основного и единого "py" файла.  
 
 Главная задача этого модуля в созданий нескольких "HTML" сайтов на разных языках, без копирования одного и тогоже кода. Но не в одном основном файле, а при активиций основного файла несколько раз с разными языками в итоге.  
@@ -12,6 +12,7 @@
 from typing import Any
 
 import pyHTML
+from lib.htmlElements import error
 
 import os
 language_dir = os.path.dirname(os.path.abspath(__file__))
@@ -64,6 +65,7 @@ class Language:
 
         `return <list[HTMLelement | Any]>` -- Возвращяет список из переданных "HTML" элементов.  
         """
+
         arr = list(htmlElements)
         self.texts[textKey] = arr
         return arr
@@ -77,6 +79,7 @@ class Language:
         `return <list[HTMLelement]>` -- Возвращяет список в котором находяться `HTML` элементы.  
         `return None` -- Если указанного ключа не существует, то вернёться "None".  
         """
+
         text = self.texts.get(textKey)
         if text:
             return text
@@ -88,11 +91,13 @@ class LanguageManagment:
     Небольшой менеджер разных языков.  
     Он нужен для быстрого и удобного прямо из коробки создания нескольких `HTML` страниц со свойм языком.  
     """
+
     def __init__(self):
         """
         Создает менеджер языков, для управления и создания `HTML` страниц с разными языками.  
         """
-        self.mainHTMLlanguage = ""
+
+        self.mainHTMLlanguage = "en"
         """Основной язык что используеться на сайте.  
         Эта переменная нужна побольшей части для функций "`self.getLanguage()`".  
         """
@@ -114,6 +119,7 @@ class LanguageManagment:
 
         `return <Language>` -- Возвращяет класс "`Language`".  
         """
+
         lang = Language()
         self.languages[htmlLanguage] = lang
         return lang
@@ -125,8 +131,8 @@ class LanguageManagment:
         `<str> htmlLanguage` -- Ключь через который возвращяеться нужный язык.  
 
         `return <Language> -- Возвращяет язык.  
-        `return None` -- Если ключа не существует, то возвращяеться "None".
         """
+
         lang = self.languages.get(htmlLanguage)
         if lang:
             return lang
@@ -136,39 +142,78 @@ class LanguageManagment:
     def getLanguage(self) -> Language:
         """
         Функция самостоятельно возвращяет основной язык.  
-        Если небыла изменена переменная "`self.mainHTMLlanguage`" то по умолчанию вернёться "en" язык, если он существует.  
-
-        Сама по себе функция активирует "`self.getLanguageSelectively()`" передавая переменную "`self.mainHTMLlanguage`".  
+        Язык по умолчанию будет браться с переменной "`self.mainHTMLlanguage`".  
         
         `<str> htmlLanguage` -- Ключь через который возвращяеться нужный язык.  
 
         `return <Language> -- Возвращяет язык.  
-        `return None` -- Если ключа не существует, то возвращяеться "None".  
         """
+
         return self.getLanguageSelectively(self.mainHTMLlanguage)
+    
+    def getLanguageTextSelectively(self, htmlLanguage:str, textKey:str) -> list[pyHTML.HTMLelement]:
+        """
+        Возвращяет текст по указанному ключю из указанного языка.  
+
+        `<str> htmlLanguage` -- Язык в котором будет искаться тект.  
+        `<str> textKey` -- Текстовый ключь через который будет получен весь текст.  
+
+        `return <list[HTMLelement]>` -- Возвращяет список с `HTML` элементами.  
+        """
+
+        return self.getLanguageSelectively(htmlLanguage).getText(textKey)
+
+    def getLanguageText(self, textKey:str) -> list[pyHTML.HTMLelement]:
+        """
+        Возвращяет текст по указанному текстовуму ключю в том языке, который по умолчанию выставлен.  
+        Язык по умолчанию будет браться с переменной "`self.mainHTMLlanguage`".  
+
+        `<str> textKey` -- Ключь через который будет получен весь текст.  
+
+        `return <list[HTMLelement]>` -- Возвращяет список с `HTML` элементами.  
+        """
+
+        return self.getLanguage().getText(textKey)
 
 
-class _DefaultMessage (Exception):
+class _DefaultMessage (error.MainMessageError):
     """
     Класс создан для стандартных сообщений в этом модуле.  
     Его главная задача это сделать удобное однообразие сообщений, чтобы мгновенно считывать сообщения при разных ошибках.  
     """
 
-    def __init__(self, *message:object):
+    def __init__(
+            self,
+            *message:str,
+
+            type_message:str | None = None,
+            object_string:str | None = None,
+
+            arguments_message:str | None = None,
+            arguments:list[str] | dict[str, str] | None = None
+            ):
+
         """
         Создаёт класс для стандартных сообщений в этом модуле.  
         """
 
-        super().__init__(*message)
+        arguments2 = []
+        if isinstance(arguments, dict):
+            arguments2 = self._convertDictInList(arguments)
+        elif isinstance(arguments, list):
+            arguments2 = arguments
+        else:
+            arguments2 = None
 
-        self.message = message
-        """Сообщение об ошибке.  """
+        super().__init__(
+                *message,
 
-    def __str__(self) -> str:
-        """
-        `return <str>` -- Возвращяет стандартное сообщение об ошибке.  
-        """
-        return "\n".join(self.message)
+                type_message=type_message,
+                object_string=object_string,
+
+                arguments_message=arguments_message,
+                arguments=arguments2,
+                )
 
     def _convertDictInList(self, dictVar:dict[str, Any]) -> list[str]:
         """
@@ -181,49 +226,57 @@ class _DefaultMessage (Exception):
         `return <list[str]>` -- Возвращяет список со всеми найденными ключами из переданного славоря.  
         """
 
-        allLanguageChars = ["[", " "]
-        first = False
+        #allLanguageChars = ["[", " "]
+        #first = False
+        #for i in dictVar:
+        #    if first:
+        #        allLanguageChars.append(", ")
+        #    else:
+        #        first = True
+
+        #    allLanguageChars.append(i)
+
+        #allLanguageChars.append(" ")
+        #allLanguageChars.append("]")
+
+        #return allLanguageChars
+
+        allLanguage = []
         for i in dictVar:
-            if first:
-                allLanguageChars.append(", ")
-            else:
-                first = True
+            allLanguage.append(i)
 
-            allLanguageChars.append(i)
+        return allLanguage
 
-        allLanguageChars.append(" ")
-        allLanguageChars.append("]")
+    #def _convertDictInString(self, dictVar:dict[str, Any]) -> str:
+    #    """
+    #    Конвертирует все ключи что были в переданном словаре в строку. 
 
-        return allLanguageChars
+    #    Данная функция нужна только для ошибок в этом модуле, за её пределами использовать её не желательно. 
 
-    def _convertDictInString(self, dictVar:dict[str, Any]) -> str:
-        """
-        Конвертирует все ключи что были в переданном словаре в строку. 
+    #    Функция работает на основе функций "`self._convertDictInList`". 
 
-        Данная функция нужна только для ошибок в этом модуле, за её пределами использовать её не желательно. 
+    #    `<dict[str, Any]> dictVar` -- Словарь из которого нужно достать все ключи.
 
-        Функция работает на основе функций "`self._convertDictInList`". 
+    #    `return <str>` -- Возвращяет строку в которой будут последовательно поставленные ключи, что были найдены в словаре.  
+    #    """
 
-        `<dict[str, Any]> dictVar` -- Словарь из которого нужно достать все ключи.
+    #    return "".join(self._convertDictInList(dictVar))
 
-        `return <str>` -- Возвращяет строку в которой будут последовательно поставленные ключи, что были найдены в словаре.  
-        """
-        return "".join(self._convertDictInList(dictVar))
+    #def _getDefaultMessage(self, startMessage:str, objectString:str, message:str) -> str:
+    #    """
+    #    Возвращяет стандартный текст об ошибке.  
+    #    Эта функция нужна для удобного однообразия.  
 
-    def _getDefaultMessage(self, startMessage:str, objectString:str, message:str) -> str:
-        """
-        Возвращяет стандартный текст об ошибке.  
-        Эта функция нужна для удобного однообразия.  
+    #    Данная функция нужна только для ошибок в этом модуле, за её пределами использовать её не желательно. 
 
-        Данная функция нужна только для ошибок в этом модуле, за её пределами использовать её не желательно. 
+    #    `<str> startMessage` -- Начальное сообщение. Оно будет ставиться в самом начале всего сообщкния.  
+    #    `<str> objectString` -- Специальное сообщение об объекте. Эта переменная нужна только для видимого обозначения объекта по которому и была ошибка.  
+    #    `<str> message` -- Сообщение об ошибке.  
 
-        `<str> startMessage` -- Начальное сообщение. Оно будет ставиться в самом начале всего сообщкния.  
-        `<str> objectString` -- Специальное сообщение об объекте. Эта переменная нужна только для видимого обозначения объекта по которому и была ошибка.  
-        `<str> message` -- Сообщение об ошибке.  
+    #    `return <str>` -- Возвращяет однотипную строку об ошибке.  
+    #    """
 
-        `return <str>` -- Возвращяет однотипную строку об ошибке.  
-        """
-        return f"{startMessage} \"{objectString}\" -- {message}"
+    #    return f"{startMessage} \"{objectString}\" -- {message}"
 
 class LanguageTextKeyNotFoundError (_DefaultMessage):
     """
@@ -242,29 +295,37 @@ class LanguageTextKeyNotFoundError (_DefaultMessage):
         * `None` - Если переменна не будет передана, то список из существующих доступных ключей небудет создана.
         """
 
-        super().__init__(textKey, message)
+        super().__init__(
+                *message,
 
-        self.message = message
-        """Сообщение об ошибке.  """
-        self.textKey = textKey
-        """Текстовый ключь из-за которого и произошла эта ошибка.  """
-        self.allTextKey = ""
-        """Все ключи что будут найдены в переданном словаре.  
-        Все ключи будут заранее записаны в строке.  """
+                type_message = "Ключь",
+                object_string = textKey,
 
-        if allTextKey:
-            self.allTextKey = self._convertDictInString(allTextKey)
+                arguments_message = "Списк существующих ключей",
+                arguments = allTextKey,
+                )
 
-    def __str__(self):
-        """
-        `return <str>` -- Возвращяет стандартное сообщение об ошибке.  
-        """
+        #self.message = message
+        #"""Сообщение об ошибке.  """
+        #self.textKey = textKey
+        #"""Текстовый ключь из-за которого и произошла эта ошибка.  """
+        #self.allTextKey = ""
+        #"""Все ключи что будут найдены в переданном словаре.  
+        #Все ключи будут заранее записаны в строке.  """
 
-        allTextKey = ""
-        if self.allTextKey:
-            allTextKey = f"\nВсе существующие ключи: \"{self.allTextKey}\""
+        #if allTextKey:
+        #    self.allTextKey = self._convertDictInString(allTextKey)
 
-        return self._getDefaultMessage("Ключь", self.textKey, "\n".join(self.message)) + allTextKey
+    #def __str__(self):
+    #    """
+    #    `return <str>` -- Возвращяет стандартное сообщение об ошибке.  
+    #    """
+
+    #    allTextKey = ""
+    #    if self.allTextKey:
+    #        allTextKey = f"\nСписок существующих ключей: \"{self.allTextKey}\""
+
+    #    return self._getDefaultMessage("Ключь", self.textKey, "\n".join(self.message)) + allTextKey
 
 class LanguageNotFoundError (_DefaultMessage):
     """
@@ -283,29 +344,39 @@ class LanguageNotFoundError (_DefaultMessage):
         * `None` - Если переменная не будет переданна, то список из существующих языков не будет создан.  
         """
 
-        super().__init__(language, message)
+        super().__init__(
+                *message,
 
-        self.message = message
-        """Сообщение об ошибке.  """
-        self.language = language
-        """Язык.  """
-        self.allLanguage = ""
-        """Все языки что были в переданном "`LanguageManagment`".  """
+                type_message = "Язык",
+                object_string = language,
 
-        # Заполняем переменную "`self.allLanguage`" всеми языками что есть в переданном "`LanguageManagment`".
-        if allLanguage:
-            self.allLanguage = self._convertDictInString(allLanguage)
+                arguments_message = "Списк существующих языков",
+                arguments = allLanguage,
+                )
 
-    def __str__(self) -> str:
-        """
-        `return <str>` -- Возвращяет стандартное сообщение об ошибке.  
-        """
+        #super().__init__(language, message)
 
-        allLanguage = ""
-        if self.allLanguage:
-            allLanguage = f"\nСписк существующих языков: \"{self.allLanguage}\""
+        #self.message = message
+        #"""Сообщение об ошибке.  """
+        #self.language = language
+        #"""Язык.  """
+        #self.allLanguage = ""
+        #"""Все языки что были в переданном "`LanguageManagment`".  """
 
-        return self._getDefaultMessage("Язык", self.language, "\n".join(self.message)) + allLanguage
+        ## Заполняем переменную "`self.allLanguage`" всеми языками что есть в переданном "`LanguageManagment`".
+        #if allLanguage:
+        #    self.allLanguage = self._convertDictInString(allLanguage)
+
+    #def __str__(self) -> str:
+    #    """
+    #    `return <str>` -- Возвращяет стандартное сообщение об ошибке.  
+    #    """
+
+    #    allLanguage = ""
+    #    if self.allLanguage:
+    #        allLanguage = f"\nСписк существующих языков: \"{self.allLanguage}\""
+
+    #    return self._getDefaultMessage("Язык", self.language, "\n".join(self.message)) + allLanguage
 
 
 __versin__ = "1.0.0"
@@ -318,3 +389,13 @@ __all__ = [
     "LanguageTextKeyNotFoundError",
     "LanguageNotFoundError",
 ]
+
+if __name__ == "__main__":
+    lm = LanguageManagment()
+    l_en = lm.setLanguage("en")
+    l_ru = lm.setLanguage("ru")
+
+    l_en.setText("Zzz", "sleep")
+    l_ru.setText("Zzz", "спать")
+
+    lm.getLanguageTextSelectively("en", "zzz")

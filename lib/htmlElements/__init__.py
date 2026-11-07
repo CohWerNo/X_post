@@ -14,7 +14,7 @@ import pyHTML
 
 from .text import text
 from .language import language
-#from .error import DefaultMessageError, convertDictInString
+from . import error
 
 htmlElements_dir = os.path.dirname(os.path.abspath(__file__))
 """Полный путь до папки "`htmlElements`", что находится в корневой папке.  """
@@ -49,4 +49,7 @@ __all__ = [
     "init",
 
     "text",
+    "language",
+
+    "error",
 ]

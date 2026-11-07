@@ -15,7 +15,7 @@ sys.path.append(fullRootPath)
 # Собираем файл в `HTML` страницу.
 import pyHTML
 
-import htmlElements
+from lib import htmlElements
 
 OUTPUT_FILE_NAME = f"{os.path.basename(fullBuildPath)}"
 """Имя конечного `HTML` файла.  """
@@ -71,15 +71,16 @@ htmlMinifierNext_link.append("html-minifier-next")
 htmlMinifierNext_link.attributes = {"href": "https://github.com/j9t/html-minifier-next"}
 
 language_en.setText(language_textDescription,
-    f"Hello!{BR}{BR}",
+    f"Hello!", BR,
+    BR
 )
 language_ru.setText(language_textDescription,
-    f"Привет!{BR}{BR}",
-    
-    "Это небольшая ", text_monospace1, " проект, которая позволяет собирать вот такие ", text_monospace2, f" сайты.{BR}"
-    "Этот проект позволяет легко создать небольшой и легкий по размерам локальный ", text_monospace2, f" сайт.{BR}{BR}"
-    
-    "Я ", htmlElements.addFastTag("b", "ОЧЕНЬ"), " благодарен сообществу что делают \"", htmlElements.addFastTag(htmlElements.text.HTML__TEXT_MONOSPACE, htmlMinifierNext_link), f"\"!{BR}",
+    f"Привет!", BR,
+    BR,
+    "Это небольшая ", text_monospace1, " проект, которая позволяет собирать вот такие ", text_monospace2, " сайты.", BR,
+    "Этот проект позволяет легко создать небольшой и легкий по размерам локальный ", text_monospace2, " сайт.", BR,
+    BR,
+    "Я ", htmlElements.addFastTag("b", "ОЧЕНЬ"), " благодарен сообществу что делают \"", htmlElements.addFastTag(htmlElements.text.HTML__TEXT_MONOSPACE, htmlMinifierNext_link), "\"!", BR,
     "Благодаря именно этим людям я сделал то что хотел."
 )
 
